@@ -8,9 +8,9 @@ pipeline {
       }
     }
 
-    stage('Unit test') {
+    stage('test') {
       parallel {
-        stage('test') {
+        stage('unit test') {
           steps {
             echo 'test maven app'
             sh 'mvn clean test'
@@ -20,6 +20,13 @@ pipeline {
         stage('SCA') {
           steps {
             echo 'Software Component Analysis'
+            sleep 5
+          }
+        }
+
+        stage('SAST') {
+          steps {
+            sleep 9
           }
         }
 
@@ -30,6 +37,12 @@ pipeline {
       steps {
         echo 'package maven app'
         sh 'mvn package -DskipTests'
+      }
+    }
+
+    stage('Container image') {
+      steps {
+        sleep 5
       }
     }
 
