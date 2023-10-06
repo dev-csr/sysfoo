@@ -1,29 +1,40 @@
-pipeline{
+pipeline {
+  agent any
+  stages {
+    stage('build') {
+      steps {
+        echo 'compile maven app'
+        sh 'mvn compile'
+      }
+    }
 
-agent any
+    stage('test') {
+      parallel {
+        stage('test') {
+          steps {
+            echo 'test maven app'
+            sh 'mvn clean test'
+          }
+        }
 
-tools{
-maven 'maven 3.6.3'
-}
+        stage('SCA') {
+          steps {
+            echo 'Software Component Analysis'
+          }
+        }
 
-stages{
-stage('build'){
-steps{
-echo 'compile maven app'
-sh 'mvn compile'
-}
-}
-stage('test'){
-steps{
-echo 'test maven app'
-sh 'mvn clean test'
-}
-}
-stage('package'){
-steps{
-echo 'package maven app'
-sh 'mvn package -DskipTests'
-}
-}
-}
+      }
+    }
+
+    stage('package') {
+      steps {
+        echo 'package maven app'
+        sh 'mvn package -DskipTests'
+      }
+    }
+
+  }
+  tools {
+    maven 'maven 3.6.3'
+  }
 }
