@@ -46,8 +46,8 @@ pipeline {
           agent any
           steps {
             script {
-              docker.withRegistry('https://index.docker.io/latest/', 'dockerlogin') {
-                def dockerImage = docker.build("srikanth3391/sysfoo:latest", "./")
+              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                def dockerImage = docker.build("srikanth3391/sysfoo:v${env.BUILD_ID}", "./")
                 dockerImage.push()
                 dockerImage.push("latest")
                 dockerImage.push("dev")
