@@ -43,12 +43,7 @@ pipeline {
         }
 
         stage('Docker B&P') {
-          agent {
-            docker {
-              image 'maven:3.6.3-jdk-11-slim'
-            }
-
-          }
+          agent any
           steps {
             script {
               docker.withRegistry('https://index.docker.io/latest/', 'dockerlogin') {
