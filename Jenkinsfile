@@ -52,7 +52,7 @@ pipeline {
           steps {
             script {
               docker.withRegistry('https://index.docker.io/latest/', 'dockerlogin') {
-                def dockerImage = docker.build("srikanth3391/sysfoo:v${env.BUILD_ID}", "./")
+                def dockerImage = docker.build("srikanth3391/sysfoo:latest", "./")
                 dockerImage.push()
                 dockerImage.push("latest")
                 dockerImage.push("dev")
