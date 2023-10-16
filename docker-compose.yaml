@@ -4,4 +4,4 @@ services:
     sysfoo:
       image: srikanth3391/sysfoo:dev
       ports:
-        -8888:8888
+        - 8888:8080
