@@ -26,7 +26,7 @@ pipeline {
         sh 'mvn clean test'
       }
     }
-    
+
     stage('package') {
       parallel {
         stage('package') {
@@ -34,8 +34,11 @@ pipeline {
             docker {
               image 'maven:3.6.3-jdk-11-slim'
             }
+
           }
-          when {branch 'master'}
+          when {
+            branch 'master'
+          }
           steps {
             echo 'package maven app'
             sh 'mvn package -DskipTests'
@@ -44,7 +47,9 @@ pipeline {
 
         stage('Docker B&P') {
           agent any
-          when {branch 'master'}
+          when {
+            branch 'master'
+          }
           steps {
             script {
               docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
@@ -58,6 +63,13 @@ pipeline {
           }
         }
 
+      }
+    }
+
+    stage('Deploy to dev') {
+      agent any
+      steps {
+        sh 'docker-compose up -d'
       }
     }
 
